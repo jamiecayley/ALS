@@ -1,4 +1,3 @@
-
 import csv
 
 path = '/Users/mtchavez/Documents/ALS/Diseasome/GWAS.txt'
@@ -22,6 +21,10 @@ for row in rows:
 	if reported_genes == 'Intergenic':
 		reported_genes = row[14]
 	disease_gene[disease] = reported_genes
+	writer.writerow((disease, reported_gene))
 
 print disease_gene
 print disease_gene['Amyotrophic lateral sclerosis']
+
+
+write_file.close() 
