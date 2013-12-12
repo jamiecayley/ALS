@@ -22,7 +22,8 @@ for row in rows:
 		reported_genes = row[14]
 	if reported_genes == 'Intergenic':
 		reported_genes = row[14]
-	disease_gene[disease] = reported_genes
+	group = disease_gene.setdefault(disease, [])
+    	group.append(reported_genes)
 	writer.writerow((disease, reported_genes))
 
 print disease_gene
