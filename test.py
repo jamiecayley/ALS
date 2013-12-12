@@ -14,6 +14,8 @@ writer.writerow(('disease', 'genes'))
 
 disease_gene = dict()
 for row in rows:
+	if not row:
+		continue
 	disease = row[7]
 	reported_genes = row[13]
 	if reported_genes == 'NR':
