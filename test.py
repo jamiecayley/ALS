@@ -14,20 +14,27 @@ writer.writerow(('disease', 'genes'))
 
 disease_gene = dict()
 for row in rows:
-	if not row:
-		continue
-	disease = row[7]
-	reported_genes = row[13]
-	if reported_genes == 'NR':
-		reported_genes = row[14]
-	if reported_genes == 'Intergenic':
-		reported_genes = row[14]
-	group = disease_gene.setdefault(disease, [])
-    	group.append(reported_genes)
-	writer.writerow((disease, reported_genes))
+    if not row:
+            continue
+    disease = row[7]
+    for x in row:
+        reported_genes = row[13]
+        if reported_genes == 'NR':
+            reported_genes = row[14]
+        if reported_genes == 'Intergenic':
+            reported_genes = row[14]
 
-print disease_gene
+    if reported_genes == ' - ' or \
+      reported_genes == 'Pending':
+        continue
+
+    reported_genes = set(reported_genes.split(','))
+    group = disease_gene.setdefault(disease, [])
+    for x in reported_genes:
+       group.append(x)
+
+    writer.writerow((disease, reported_genes))
+
 print disease_gene['Amyotrophic lateral sclerosis']
 
-
-write_file.close() 
+write_file.close()
