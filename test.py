@@ -54,7 +54,7 @@ def shared_genes(disease, data):
         if num_elems(common_genes) == 0:
             print "No shared genes"
         else:
-            percentage_common = (num1 + num2)/num_elems(common_genes)
+            percentage_common = num_elems(common_genes)/(num1 + num2)
             print percentage_common
         
 print shared_genes(disease_gene['Amyotrophic lateral sclerosis'], disease_gene)
