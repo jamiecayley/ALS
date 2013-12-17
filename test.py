@@ -1,4 +1,7 @@
 import csv
+import math
+import networkx as nx
+import numpy as np
 
 path = '/Users/mtchavez/Documents/ALS/Diseasome/GWAS.txt'
 read_file = open(path)
