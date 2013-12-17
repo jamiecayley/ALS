@@ -45,8 +45,8 @@ class DiseaseGeneManager:
     def computePercentageOverlap(self, disease1, disease2):
         genes1 = self.diseases2genes[disease1]
         genes2 = self.diseases2genes[disease2]
-        sizeOverlap = len(genes1.intersect(genes2))
-        sizeUnion = len(genes1) + lens(genes2)
+        sizeOverlap = len(genes1.intersection(genes2))
+        sizeUnion = len(genes1) + len(genes2)
         percentage = sizeOverlap / sizeUnion
         return percentage
 
