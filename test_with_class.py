@@ -5,35 +5,35 @@ import numpy as np
 
 class DiseaseGeneManager:
     def __init__(self, fileName):
+        self.fileName = fileName
         self.genes2diseases = {}
         # Maps from geneName::String to {diseaseName::string}
         self.diseases2genes = {}
         # Maps from diseaseName::String to {geneName::string}
-        tabularData = elf.load_data_from_csv(fileName)
-        self.process_data(tabularData)
 
 
-    def load_data_from_csv(self, csvFileName):
+    def load_data_from_csv(self):
         #do something
-        with open(csvFileName, 'rb', delimeter = '\t') as fileInput:
-            fieldnames = csv.reader.next()
-            for row in csv.reader(fileInput):
-                if not row:
-                    continue
-                diseaseName = row[7]
-                reported_genes = row[13]
-                if reported_genes == 'NR' or reported_genes == 'Intergenic':
-                    reported_genes == row[14]
+        read_file = open(self.fileName)
+        reader = csv.reader(read_file, delimiter='\t')
+        fieldnames = reader.next()
+        for row in reader:
+            if not row:
+                continue
+            diseaseName = row[7]
+            reported_genes = row[13]
+            if reported_genes == 'NR' or reported_genes == 'Intergenic':
+                reported_genes == row[14]
 
-                if reported_genes == ' - ' or reported_genes == 'Pending':
-                    continue
+            if reported_genes == ' - ' or reported_genes == 'Pending':
+                continue
 
-                reported_genes = set(reported_genes.split(','))
-                group = diseases2genes.setdefault(disease, set())
+            reported_genes = set(reported_genes.split(','))
+            group = self.diseases2genes.setdefault(diseaseName, set())
 
-                group.update(reported_genes)
+            group.update(reported_genes)
+        read_file.close()
 
-        self.
 
     def computeSharedGenes(self, targetDisease):
         associatedGenes = self.diseases2genes[targetDisease]
@@ -53,4 +53,7 @@ class DiseaseGeneManager:
 def main():
     fileName = "/Users/mtchavez/Documents/ALS/Diseasome/GWAS.txt"
     dgm = DiseaseGeneManager(fileName)
+    dgm.load_data_from_csv()
     print dgm.computeSharedGenes("Amyotrophic lateral sclerosis")
+
+main()
