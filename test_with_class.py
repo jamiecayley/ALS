@@ -47,8 +47,8 @@ class DiseaseGeneManager:
         genes2 = self.diseases2genes[disease2]
         sizeOverlap = len(genes1.intersection(genes2))
         sizeUnion = len(genes1) + len(genes2)
-        percentage = sizeOverlap / sizeUnion
-        return percentage
+        percentage = float(sizeOverlap) / sizeUnion
+        print disease1, disease2, percentage
 
 def main():
     fileName = "/Users/mtchavez/Documents/ALS/Diseasome/GWAS.txt"
