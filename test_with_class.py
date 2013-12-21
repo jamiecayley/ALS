@@ -14,7 +14,6 @@ class DiseaseGeneManager:
 
 
     def load_data_from_csv(self):
-        #do something
         read_file = open(self.fileName)
         reader = csv.reader(read_file, delimiter='\t')
         fieldnames = reader.next()
@@ -55,7 +54,9 @@ def main():
     fileName = "/Users/mtchavez/Documents/ALS/Diseasome/GWAS.txt"
     dgm = DiseaseGeneManager(fileName)
     dgm.load_data_from_csv()
-    #dgm.computeSharedGenes("Amyotrophic lateral sclerosis")
+    #ALS overlap with GWAS database
+    dgm.computeSharedGenes("Amyotrophic lateral sclerosis")
+    #replication of a study by Cotsapas and Hafler (2013)
     inflamatory_diseases_1 = ["Crohn's disease", "Ulcerative colitis", "Rheumatoid arthritis", "Systemic lupus erythematosus", "Type 1 diabetes", "IgA nephropathy", "Multiple sclerosis", "Vitiligo", "Psoriasis", "Atopic dermatitis", "Ankylosing spondylitis", "Celiac disease", "Primary biliary cirrhosis", "Systemic sclerosis", "Primary sclerosing cholangitis"]
     for pair in itertools.product(inflamatory_diseases_1, repeat=2):
         dgm.computePercentageOverlap(*pair)
