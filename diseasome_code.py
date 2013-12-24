@@ -63,8 +63,8 @@ class DiseaseGeneManager:
         egonet = self.graph.subgraph(nodes)
     
 def main():
-    fileName = "/Users/mtchavez/Documents/ALS/Diseasome/GWAS.txt"
-    path = "/users/mtchavez/Documents/ALS/Diseasome/graph.gml"
+    fileName = "/Users/mtchavez/Documents/ALS/Diseasome/GWAS.txt" #location of GWAS catalog in computer
+    path = "/users/mtchavez/Documents/ALS/Diseasome/graph.gml" #location where you want to store graph
     dgm = DiseaseGeneManager(fileName)
     dgm.load_data_from_csv()
     dgm.computeSharedGenes("Amyotrophic lateral sclerosis")     #ALS overlap with GWAS database
