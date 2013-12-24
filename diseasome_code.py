@@ -3,6 +3,7 @@ import math
 import networkx as nx
 import numpy as np
 import itertools
+import pprint
 
 class DiseaseGeneManager:
     def __init__(self, fileName):
@@ -11,6 +12,8 @@ class DiseaseGeneManager:
         # Maps from geneName::String to {diseaseName::string}
         self.diseases2genes = {}
         # Maps from diseaseName::String to {geneName::string}
+        self.graph = nx.Graph()
+        # Creates a networkx graph
 
 
     def load_data_from_csv(self):
@@ -49,16 +52,29 @@ class DiseaseGeneManager:
         sizeUnion = len(genes1.union(genes2))
         percentage = float(sizeOverlap) / sizeUnion
         print disease1, disease2, percentage
+        if percentage > 0.0: 
+            #self.graph.add_node(disease2)
+            self.graph.add_edge(disease1, disease2, weight = percentage)
 
+    def egoGraph(self, targetDisease):
+        ego = targetDisease
+        nodes = set([ego])
+        nodes.update(self.graph.neighbors(ego))
+        egonet = self.graph.subgraph(nodes)
+    
 def main():
     fileName = "/Users/mtchavez/Documents/ALS/Diseasome/GWAS.txt"
+    path = "/users/mtchavez/Documents/ALS/Diseasome/graph.gml"
     dgm = DiseaseGeneManager(fileName)
     dgm.load_data_from_csv()
-    #ALS overlap with GWAS database
-    dgm.computeSharedGenes("Amyotrophic lateral sclerosis")
-    #replication of a study by Cotsapas and Hafler (2013)
-    inflamatory_diseases_1 = ["Crohn's disease", "Ulcerative colitis", "Rheumatoid arthritis", "Systemic lupus erythematosus", "Type 1 diabetes", "IgA nephropathy", "Multiple sclerosis", "Vitiligo", "Psoriasis", "Atopic dermatitis", "Ankylosing spondylitis", "Celiac disease", "Primary biliary cirrhosis", "Systemic sclerosis", "Primary sclerosing cholangitis"]
+    dgm.computeSharedGenes("Amyotrophic lateral sclerosis")     #ALS overlap with GWAS database
+    #dgm.egoGraph('Amyotrophic lateral sclerosis')
+    pprint.pprint(dgm.graph.edges(data = True))
+    nx.write_gml(dgm.graph, path)
+    '''inflamatory_diseases_1 = ["Crohn's disease", "Ulcerative colitis", "Rheumatoid arthritis", "Systemic lupus erythematosus", "Type 1 diabetes", "IgA nephropathy", "Multiple sclerosis", "Vitiligo", "Psoriasis", "Atopic dermatitis", "Ankylosing spondylitis", "Celiac disease", "Primary biliary cirrhosis", "Systemic sclerosis", "Primary sclerosing cholangitis"]
     for pair in itertools.product(inflamatory_diseases_1, repeat=2):
-        dgm.computePercentageOverlap(*pair)
+        dgm.computePercentageOverlap(*pair)     #replication of a study by Cotsapas and Hafler (2013)'''
+
 
 main()
+
