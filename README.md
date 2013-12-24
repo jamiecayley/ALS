@@ -1,4 +1,4 @@
-#ALS Diseasome
+#Primary project: ALS Diseasome
 
 ##Goal:
 
