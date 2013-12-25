@@ -3,6 +3,9 @@ import math
 import networkx as nx
 import numpy as np
 import itertools
+import urllib2
+from xml.dom import minidom
+import pylab as plt
 import pprint
 
 class DiseaseGeneManager:
@@ -14,6 +17,7 @@ class DiseaseGeneManager:
         # Maps from diseaseName::String to {geneName::string}
         self.graph = nx.Graph()
         # Creates a networkx graph
+        self.diseasesInNetwork = []
 
 
     def load_data_from_csv(self):
@@ -42,8 +46,20 @@ class DiseaseGeneManager:
         associatedGenes = self.diseases2genes[targetDisease]
         computed_associations = {} # map from diseaseName to percentage overlap with targetDisease
         for diseaseName in self.diseases2genes:
-            computed_associations[diseaseName] = self.computePercentageOverlap(targetDisease, diseaseName)
+            computed_associations[diseaseName] = self.computeNetwork(targetDisease, diseaseName)
         return computed_associations
+
+    def computeNetwork(self, disease1):
+        associatedGenes = self.diseases2genes[disease1]
+        self.diseasesInNetwork.append(disease1)
+        genes1 = self.diseases2genes[disease1]
+        for disease2 in self.diseases2genes:
+            genes2 = self.diseases2genes[disease2]
+            sizeOverlap = len(genes1.intersection(genes2))
+            sizeUnion = len(genes1.union(genes2))
+            percentage = float(sizeOverlap) / sizeUnion
+            if percentage > 0.0: 
+                self.diseasesInNetwork.append(disease2)
 
     def computePercentageOverlap(self, disease1, disease2):
         genes1 = self.diseases2genes[disease1]
@@ -51,30 +67,21 @@ class DiseaseGeneManager:
         sizeOverlap = len(genes1.intersection(genes2))
         sizeUnion = len(genes1.union(genes2))
         percentage = float(sizeOverlap) / sizeUnion
-        print disease1, disease2, percentage
         if percentage > 0.0: 
-            #self.graph.add_node(disease2)
-            self.graph.add_edge(disease1, disease2, weight = percentage)
+            print disease1, disease2, percentage
+            if percentage < 1.0:
+                self.graph.add_edge(disease1, disease2, weight = percentage)
 
-    def egoGraph(self, targetDisease):
-        ego = targetDisease
-        nodes = set([ego])
-        nodes.update(self.graph.neighbors(ego))
-        egonet = self.graph.subgraph(nodes)
-    
 def main():
     fileName = "/Users/mtchavez/Documents/ALS/Diseasome/GWAS.txt" #location of GWAS catalog in computer
-    path = "/users/mtchavez/Documents/ALS/Diseasome/graph.gml" #location where you want to store graph
+    path = "/users/mtchavez/Documents/ALS/Diseasome/graph2.gml" #location where you want to store gml file
     dgm = DiseaseGeneManager(fileName)
     dgm.load_data_from_csv()
-    dgm.computeSharedGenes("Amyotrophic lateral sclerosis")     #ALS overlap with GWAS database
-    #dgm.egoGraph('Amyotrophic lateral sclerosis')
+    dgm.computeNetwork("Amyotrophic lateral sclerosis")     #ALS overlap with GWAS database
+    for pair in itertools.product(dgm.diseasesInNetwork, repeat=2):
+        dgm.computePercentageOverlap(*pair)
     pprint.pprint(dgm.graph.edges(data = True))
-    nx.write_gml(dgm.graph, path)
-    '''inflamatory_diseases_1 = ["Crohn's disease", "Ulcerative colitis", "Rheumatoid arthritis", "Systemic lupus erythematosus", "Type 1 diabetes", "IgA nephropathy", "Multiple sclerosis", "Vitiligo", "Psoriasis", "Atopic dermatitis", "Ankylosing spondylitis", "Celiac disease", "Primary biliary cirrhosis", "Systemic sclerosis", "Primary sclerosing cholangitis"]
-    for pair in itertools.product(inflamatory_diseases_1, repeat=2):
-        dgm.computePercentageOverlap(*pair)     #replication of a study by Cotsapas and Hafler (2013)'''
-
+    nx.write_gml(dgm.graph, path) #create a gml file to open it in cytoscape
 
 main()
 
