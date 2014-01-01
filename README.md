@@ -11,6 +11,9 @@ In the network, each node is a disease and edges represent shared succeptible ge
  
 Each gene receives a weight equal to the inverse of the square root of its frequency. The edge weight between diseases in the network is calculated as the sum of the weights for the intersection of genes divided by the sum of weights for the union of genes. Edges between diseases with no shared genes are omitted. 
 
+Drugs were mapped to the diseasome from DrugBank (reference) 
+
 ###Random Walk with restart:
 To determine proximity of a node to any other node in the network a random walk with restart can be used. The disease of interest (ALS) is masked from the network, the corresponding edge weights are used as seed probabilities for a random walk with a restart probability of 0.2 at each step which is run until convergence.
+
 
