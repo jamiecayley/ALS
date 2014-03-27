@@ -20,9 +20,13 @@ class DiseaseGeneManager:
     self.diseases = fieldnames[1:]
 
   def calculate_correlation(self, disease1, disease2):
-    correlation = scipy.stats.spearmanr(disease1, disease2)
-    self.graph.add_edge(disease1, disease2, weight = correlation)
-    return disease1, disease2, correlation
+      correlation = scipy.stats.spearmanr(disease1, disease2)
+      self.graph.add_edge(disease1, disease2, weight = correlation)
+      write_file = open('disease_predictions.csv', wb)
+      writer = csv.writer(write_file, delimiter = '\t')
+      writer.writerow(("disease 1", "disease 2", "correlation"))
+      writer.writerow((disease1, disease2, correlation))
+
 
 
 def main():
