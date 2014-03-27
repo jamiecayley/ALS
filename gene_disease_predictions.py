@@ -19,9 +19,9 @@ class DiseaseGeneManager:
     reader = csv.reader(read_file, delimiter = '\t')
     fieldnames = reader.next()
     self.diseases = fieldnames[1:]
-    data = numpy.loadtxt(fileName, dtype = float, delimiter = '\t', skiprows = 1, usecols = range(1, 32))
-    for disease in diseases:
-      disease2genes[disease] = data[:, index(disease)]
+    data = numpy.loadtxt(self.fileName, dtype = float, delimiter = '\t', skiprows = 1, usecols = range(1, 24))
+    for disease in self.diseases:
+      self.disease2genes[disease] = data[:, self.diseases.index(disease)]
 
   def calculate_correlation(self, disease1, disease2):
     correlation = scipy.stats.spearmanr(disease1, disease2)
