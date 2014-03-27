@@ -27,7 +27,6 @@ class DiseaseGeneManager:
       writer.writerow(("disease 1", "disease 2", "correlation"))
       writer.writerow((disease1, disease2, correlation))
 
-
 def main():
   fileName = '/Users/mtchavez/Downloads/prediction-table.txt'
   path = '/Users/mtchavez/documents/probabilities_graph.gml'
