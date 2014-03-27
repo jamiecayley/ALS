@@ -3,6 +3,7 @@ import itertools
 import pprint
 import networkx as nx
 import csv
+import numpy
 
 class DiseaseGeneManager:
   def __init__(self, fileName):
@@ -18,18 +19,22 @@ class DiseaseGeneManager:
     reader = csv.reader(read_file, delimiter = '\t')
     fieldnames = reader.next()
     self.diseases = fieldnames[1:]
+    data = numpy.loadtxt(fileName, dtype = float, delimiter = '\t', skiprows = 1, usecols = range(1, 32))
+    for disease in diseases:
+      disease2genes[disease] = data[:, index(disease)]
 
   def calculate_correlation(self, disease1, disease2):
-      correlation = scipy.stats.spearmanr(disease1, disease2)
-      self.graph.add_edge(disease1, disease2, weight = correlation)
-      write_file = open('disease_predictions.csv', wb)
-      writer = csv.writer(write_file, delimiter = '\t')
-      writer.writerow(("disease 1", "disease 2", "correlation"))
-      writer.writerow((disease1, disease2, correlation))
+    correlation = scipy.stats.spearmanr(disease1, disease2)
+    self.graph.add_edge(disease1, disease2, weight = correlation)
+    write_file = open('disease_predictions.csv', wb)
+    writer = csv.writer(write_file, delimiter = '\t')
+    writer.writerow(("disease 1", "disease 2", "correlation"))
+    writer.writerow((disease1, disease2, correlation))
+
 
 def main():
   fileName = '/Users/mtchavez/Downloads/prediction-table.txt'
-  path = '/Users/mtchavez/documents/probabilities_graph.gml'
+  path = '/Users/mtchavez/documents/predictions_graph.gml'
   dgm = DiseaseGeneManager(fileName)
   dgm.load_data_from_csv()
   for pair in itertools.product(dgm.diseases, repeat=2):
