@@ -4,6 +4,7 @@ import pprint
 import networkx as nx
 import csv
 import numpy
+import pymix
 
 class DiseaseGeneManager:
   def __init__(self, fileName):
@@ -30,6 +31,11 @@ class DiseaseGeneManager:
     writer = csv.writer(write_file, delimiter = '\t')
     writer.writerow(("disease 1", "disease 2", "correlation"))
     writer.writerow((disease1, disease2, correlation))
+  
+  '''
+  def cluster_diseases(self):
+    Will write a mixture model to cluster/categorize diseases
+  '''
 
 
 def main():
