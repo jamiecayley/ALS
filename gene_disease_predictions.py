@@ -23,11 +23,12 @@ class DiseaseGeneManager:
     data = numpy.loadtxt(self.fileName, dtype = float, delimiter = '\t', skiprows = 1, usecols = range(1, 24))
     for disease in self.diseases:
       self.disease2genes[disease] = data[:, self.diseases.index(disease)]
+    read_file.close()
 
   def calculate_correlation(self, disease1, disease2):
     correlation = stats.spearmanr(disease1, disease2)
     self.graph.add_edge(disease1, disease2, weight = correlation)
-    write_file = open('disease_predictions.csv', wb)
+    write_file = open('disease_predictions.csv', 'wb')
     writer = csv.writer(write_file, delimiter = '\t')
     writer.writerow(("disease 1", "disease 2", "correlation"))
     writer.writerow((disease1, disease2, correlation))
