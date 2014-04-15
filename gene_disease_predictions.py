@@ -26,7 +26,7 @@ class DiseaseGeneManager:
     read_file.close()
 
   def calculate_correlation(self, disease1, disease2):
-    correlation = stats.spearmanr(disease1, disease2)
+    correlation = stats.spearmanr(self.disease2genes[disease1], self.disease2genes[disease2])
     self.graph.add_edge(disease1, disease2, weight = correlation)
     write_file = open('disease_predictions.csv', 'wb')
     writer = csv.writer(write_file, delimiter = '\t')
