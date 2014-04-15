@@ -4,7 +4,6 @@ import pprint
 import networkx as nx
 import csv
 import numpy
-import pymix
 
 class DiseaseGeneManager:
   def __init__(self, fileName):
