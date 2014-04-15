@@ -27,11 +27,12 @@ class DiseaseGeneManager:
 
   def calculate_correlation(self, disease1, disease2):
     correlation = stats.spearmanr(self.disease2genes[disease1], self.disease2genes[disease2])
-    self.graph.add_edge(disease1, disease2, weight = correlation[0])
     write_file = open('disease_predictions.csv', 'wb')
     writer = csv.writer(write_file, delimiter = '\t')
     writer.writerow(("disease 1", "disease 2", "correlation"))
-    writer.writerow((disease1, disease2, correlation[0]))
+    if correlation[0] < 1.0:
+      writer.writerow((disease1, disease2, correlation[0]))
+      self.graph.add_edge(disease1, disease2, weight = correlation[0])
 
 def main():
   fileName = '/Users/mtchavez/Downloads/prediction-table.txt'
