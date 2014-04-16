@@ -13,6 +13,9 @@ class DiseaseGeneManager:
     self.graph = nx.Graph()
     #creates a networkx graph
     self.diseases = []
+    self.write_file = open('disease_predictions.csv', 'a')
+    self.writer = csv.writer(self.write_file, delimiter = '\t')
+    self.writer.writerow(("disease 1", "disease 2", "correlation"))
 
   def load_data_from_csv(self):
     read_file = open(self.fileName)
@@ -30,7 +33,7 @@ class DiseaseGeneManager:
     writer = csv.writer(write_file, delimiter = '\t')
     writer.writerow(("disease 1", "disease 2", "correlation"))
     if correlation[0] < 1.0:
-      writer.writerow((disease1, disease2, correlation[0]))
+      self.writer.writerow((disease1, disease2, correlation[0]))
       self.graph.add_edge(disease1, disease2, weight = correlation[0])
 
 def main():
