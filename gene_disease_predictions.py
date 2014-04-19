@@ -32,16 +32,15 @@ class DiseaseGeneManager:
     write_file = open('disease_predictions.csv', 'wb')
     writer = csv.writer(write_file, delimiter = '\t')
     writer.writerow(("disease 1", "disease 2", "correlation"))
-    if correlation[0] < 1.0:
-      self.writer.writerow((disease1, disease2, correlation[0]))
-      self.graph.add_edge(disease1, disease2, weight = correlation[0])
+    self.writer.writerow((disease1, disease2, correlation[0]))
+    self.graph.add_edge(disease1, disease2, weight = correlation[0])
 
 def main():
   fileName = '/Users/mtchavez/Downloads/prediction-table.txt'
   path = '/Users/mtchavez/documents/predictions_graph.gml'
   dgm = DiseaseGeneManager(fileName)
   dgm.load_data_from_csv()
-  for pair in itertools.product(dgm.diseases, repeat=2):
+  for pair in itertools.combinations(dgm.diseases, repeat=2):
     dgm.calculate_correlation(*pair)
   pprint.pprint(dgm.graph.edges(data = True))
   nx.write_gml(dgm.graph, path)
