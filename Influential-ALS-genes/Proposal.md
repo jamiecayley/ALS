@@ -2,8 +2,8 @@
 Maria T Chavez 
 
 #Specific Aims 
-  *Compile a set of ALS genes 
-  *On gene networks, calculate a measure of influence 
+  * Compile a set of ALS genes 
+  * On gene networks, calculate a measure of influence 
 
 #Background
 
