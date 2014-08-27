@@ -81,6 +81,18 @@ def main():
     for pair in itertools.product(dgm.diseasesInNetwork, repeat=2):
         dgm.computePercentageOverlap(*pair)
     pprint.pprint(dgm.graph.edges(data = True))
+    dgm.computeNetwork("Schizophrenia, schizoaffective disorder or bipolar disorder")     #Schizophrenia overlap with GWAS database
+    for pair in itertools.product(dgm.diseasesInNetwork, repeat=2):
+        dgm.computePercentageOverlap(*pair)
+    pprint.pprint(dgm.graph.edges(data = True))
+    dgm.computeNetwork("Gray matter volume (schizophrenia interaction)")     #Schizophrenia overlap with GWAS database
+    for pair in itertools.product(dgm.diseasesInNetwork, repeat=2):
+        dgm.computePercentageOverlap(*pair)
+    pprint.pprint(dgm.graph.edges(data = True))
+    dgm.computeNetwork("Autism spectrum disorder, attention deficit-hyperactivity disorder, bipolar disorder, major depressive disorder, and schizophrenia (combined)")     #Schizophrenia overlap with GWAS database
+    for pair in itertools.product(dgm.diseasesInNetwork, repeat=2):
+        dgm.computePercentageOverlap(*pair)
+    pprint.pprint(dgm.graph.edges(data = True))
     nx.write_gml(dgm.graph, path) #create a gml file to open it in cytoscape
 
 main()
